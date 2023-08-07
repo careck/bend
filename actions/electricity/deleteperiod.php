@@ -1,3 +1,4 @@
 <?php
-function deleteperiod_ALL(Web $w) {
+function deleteperiod_ALL(Web $w)
+{
 }

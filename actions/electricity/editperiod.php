@@ -1,3 +1,4 @@
 <?php
-function editperiod_ALL(Web $w) {
+function editperiod_ALL(Web $w)
+{
 }

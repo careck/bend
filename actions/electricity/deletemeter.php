@@ -1,4 +1,4 @@
 <?php
-function deletemeter_ALL(Web $w) {
-	
+function deletemeter_ALL(Web $w)
+{
 }

@@ -1,3 +1,4 @@
 <?php
-function deletereading_ALL(Web $w) {
+function deletereading_ALL(Web $w)
+{
 }

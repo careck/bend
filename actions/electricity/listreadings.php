@@ -1,3 +1,4 @@
 <?php
-function listreadings_ALL(Web $w) {
+function listreadings_ALL(Web $w)
+{
 }

@@ -1,4 +1,4 @@
 <?php
-function editmeter_ALL(Web $w) {
-	
+function editmeter_ALL(Web $w)
+{
 }

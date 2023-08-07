@@ -1,5 +1,6 @@
 <?php
 
-function index_ALL(Web $w) {
+function index_ALL(Web $w)
+{
     History::add("Bend Electricity");
 }
