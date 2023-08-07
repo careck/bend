@@ -4,10 +4,10 @@ function list_GET(Web $w) {
 	list($userid,$periodid) = $w->pathMatch("a","b");
 	
 	// get the user
-	if (!empty($userid) && $w->Auth->hasRole("bend_admin")) {
-		$user = $w->Auth->getUser($userid);
+	if (!empty($userid) && AuthService::getInstance($w)->hasRole("bend_admin")) {
+		$user = AuthService::getInstance($w)->getUser($userid);
 	} else {
-		$user = $w->Auth->user();
+		$user = AuthService::getInstance($w)->user();
 	}
 
 	if (empty($user)) {
@@ -15,16 +15,16 @@ function list_GET(Web $w) {
 	}
 	// get workperiod
 	if (!empty($periodid)) {
-		$workperiod = $w->Bend->getWorkPeriodForId($periodid);
+		$workperiod = BendService::getInstance($w)->getWorkPeriodForId($periodid);
 	} else {
-		$workperiod = $w->Bend->getWorkPeriodForDate(time());
+		$workperiod = BendService::getInstance($w)->getWorkPeriodForDate(time());
 	}
 	if (empty($workperiod)) {
 		$w->error("No Workperiod found to display.");
 	}
 	
 	// get all workperiods to find the previous and next
-	$all_workperiods = $w->Bend->getAllWorkPeriods();
+	$all_workperiods = BendService::getInstance($w)->getAllWorkPeriods();
 	if (empty($all_workperiods)) {
 		$w->error("No Workperiods found.");
 	}
@@ -45,7 +45,7 @@ function list_GET(Web $w) {
 	}
 	
 	// calculate total work hours for this period
-	$workentries = $w->Bend->getWorkhoursForUser($user,$workperiod->id);
+	$workentries = BendService::getInstance($w)->getWorkhoursForUser($user,$workperiod->id);
 	$total_worked = 0;
 	$total_accredited = 0;
 	if (!empty($workentries)) {
@@ -57,7 +57,7 @@ function list_GET(Web $w) {
 		}
 	}
 
-	$workentries_attributed_raw = $w->Bend->getAttributedWorkhoursForUser($user,$workperiod->id);
+	$workentries_attributed_raw = BendService::getInstance($w)->getAttributedWorkhoursForUser($user,$workperiod->id);
 	$workentries_attributed = [];
 	$total_attributed = 0;
 	if (!empty($workentries_attributed_raw)) {
@@ -77,6 +77,6 @@ function list_GET(Web $w) {
 	$w->ctx("workPeriod",$workperiod);
 	$w->ctx("previous_workperiod_id", $previous_workperiod_id);
 	$w->ctx("next_workperiod_id", $next_workperiod_id);
-	$w->ctx("allWorkPeriods",$w->Bend->getAllWorkPeriods());
+	$w->ctx("allWorkPeriods",BendService::getInstance($w)->getAllWorkPeriods());
 	
 }

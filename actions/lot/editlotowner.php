@@ -4,12 +4,12 @@ function editlotowner_GET(Web $w) {
 	if (empty($lotId)) {
 		$w->out("no lot id provided"); return;
 	}
-	$lot = $w->Bend->getLotForId($lotId);
+	$lot = BendService::getInstance($w)->getLotForId($lotId);
 	$lotOwner = new BendLotOwner($w);
 	$user = new User($w);
 	$contact = new Contact($w);
 	if (!empty($lotOwnerId)) {
-		$lotOwner = $w->Bend->getBendLotOwnerForId($lotOwnerId);
+		$lotOwner = BendService::getInstance($w)->getBendLotOwnerForId($lotOwnerId);
 		$user = $lotOwner->getUser();
 		$contact = $lotOwner->getContact();
 	}
@@ -28,7 +28,7 @@ function editlotowner_GET(Web $w) {
 	$form["Owner Contact"] = array(
 			array(
 					empty($lotOwner->user_id) ?
-					array("Select Existing User", "select", "user_id", null, $w->Auth->getUsers()) :
+					array("Select Existing User", "select", "user_id", null, AuthService::getInstance($w)->getUsers()) :
 					array("User","static","",$lotOwner->getContact()->getFullName())
 			),
 			array(
@@ -51,7 +51,7 @@ function editlotowner_GET(Web $w) {
 			array(
 					array("Town", "text", "town", $lotOwner->town),
 					array("Postcode", "text", "postcode", $lotOwner->postcode),
-					array("State", "select", "state", $lotOwner->state,getStateSelectArray()),
+					array("State", "select", "state", $lotOwner->state,["ACT","NSW","NT","QLD","SA","TAS","VIC","WA"]),
 			),
 	);
 	
@@ -64,12 +64,12 @@ function editlotowner_POST(Web $w) {
 	if (empty($lotId)) {
 		$w->out("no lot id provide"); return;
 	}
-	$lot = $w->Bend->getLotForId($lotId);
+	$lot = BendService::getInstance($w)->getLotForId($lotId);
 	$lotOwner = new BendLotOwner($w);
 	$user = new User($w);
 	$contact = new Contact($w);
 	if (!empty($lotOwnerId)) {
-		$lotOwner = $w->Bend->getBendLotOwnerForId($lotOwnerId);
+		$lotOwner = BendService::getInstance($w)->getBendLotOwnerForId($lotOwnerId);
 	}
 	
 	$lotOwner->fill($_POST);
@@ -93,7 +93,7 @@ function editlotowner_POST(Web $w) {
 		$user->insert();
 		
 		// assign to bend users group
-		$group = $w->Auth->getUserForLogin("Bend Users");
+		$group = AuthService::getInstance($w)->getUserForLogin("Bend Users");
 		if (empty($group)) {
 			// create the group!
 			$group = new User($w);

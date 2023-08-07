@@ -76,7 +76,7 @@ class BendService extends DbService {
      * @param mixed $user either an object of User or integer of an id
      * @return array of BendWorkEntry objects
      */
-    function getWorkhours($user = null, $period = null, $household) {
+    function getWorkhours($user, $period, $household) {
     	$where = ['is_deleted'=>0];
     	if (!empty($user)) {
     		$userid = is_a($user,"User") ? $user->id : $user;
@@ -209,7 +209,7 @@ class BendService extends DbService {
     	$users = [];
     	if (!empty($occupants)) {
     		foreach ($occupants as $oc) {
-    			$users[] = $this->Auth->getUser($oc->user_id);
+    			$users[] = AuthService::getInstance($this->w)->getUser($oc->user_id);
     		}
     	}
     	usort($users,function ($a, $b) {
@@ -248,16 +248,18 @@ class BendService extends DbService {
     }
     
     public function navigation(Web $w, $title = null, $nav = null) {
+
+        $auth = AuthService::getInstance($w);
     	if ($title) {
     		$w->ctx("title", $title);
     	}
     
     	$nav = $nav ? $nav : array();
     
-    	if ($w->Auth->loggedIn()) {
+    	if ($auth->loggedIn()) {
 	    	$w->menuLink("bend-workhours", "Workhours", $nav);
 	    	$w->menuLink("bend-electricity", "Electricity", $nav);
-	    	if ($w->Auth->hasRole("bend_admin")) {
+	    	if ($auth->hasRole("bend_admin")) {
 	    		$w->menuLink("bend-workhours/admin", "Admin - Workhours", $nav);
 	    		$w->menuLink("bend-household", "Admin - Households", $nav);
 	    		$w->menuLink("bend-lot", "Admin - Lots", $nav);

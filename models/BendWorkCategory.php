@@ -25,7 +25,7 @@ class BendWorkCategory extends DbObject {
     	if (empty($this->parent_id)) {
     		return [$this];
     	} else {
-    		$parent = $this->Bend->getWorkCategoryForId($this->parent_id);
+    		$parent = BendService::getInstance($this->w)->getWorkCategoryForId($this->parent_id);
     		return array_merge($parent->getPath(),[$this]);
     	}
     }

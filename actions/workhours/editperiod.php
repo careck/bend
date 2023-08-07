@@ -3,7 +3,7 @@ function editperiod_GET(Web $w){
 	list($periodid) = $w->pathMatch("a");
 	$period = new BendWorkPeriod($w);
 	if (!empty($periodid)) {
-		$period = $w->Bend->getWorkPeriodForId($periodid);
+		$period = BendService::getInstance($w)->getWorkPeriodForId($periodid);
 	}
 	
 	$form["Work Period"]=array(
@@ -26,7 +26,7 @@ function editperiod_POST(Web $w){
 	list($periodid) = $w->pathMatch("a");
 	$period = new BendWorkPeriod($w);
 	if (!empty($periodid)) {
-		$period = $w->Bend->getWorkPeriodForId($periodid);
+		$period = BendService::getInstance($w)->getWorkPeriodForId($periodid);
 	}
 	
 	$period->fill($_POST);

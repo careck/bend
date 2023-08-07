@@ -99,7 +99,7 @@
 					<?php 
 					$users_and_entries = []; // this will contain a structure of [user_id,hours]
 					$total_hours = 0;
-					$workentries = $w->Bend->getWorkEntriesForHousehold($household,$workperiod);
+					$workentries = BendService::getInstance($w)->getWorkEntriesForHousehold($household,$workperiod);
 					$occupants = $household->getOccupantsForWorkperiod($workperiod);
 					$household_budget = $household->getWorkhoursLevyForWorkperiod($workperiod);
 					if (!empty($workentries)) {
@@ -120,7 +120,7 @@
 					<?php foreach ( $occupants as $occ):?>
 					<?php 
 						if (!$occ->does_workhours) continue;
-						$user = $w->Auth->getUser($occ->user_id);
+						$user = AuthService::getInstance($w)->getUser($occ->user_id);
 						// calculate the number of months that this user needs to work
 						$user_budget = $occ->getWorkhoursLevyForWorkperiod($workperiod);
 						$user_hours = !empty($users_and_entries[$user->id]) ? $users_and_entries[$user->id] : 0;

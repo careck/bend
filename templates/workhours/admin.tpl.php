@@ -6,7 +6,7 @@
 </div>
 <div class="tab-body">
 	<div id="workperiods">
-		<?php if ($w->Auth->user()->is_admin) echo Html::b("/bend-workhours/fixworkentries", "Fix Work Entries", "This could take a long time, do you want to continue?"); ?>
+		<?php if (AuthService::getInstance($w)->user()->is_admin) echo Html::b("/bend-workhours/fixworkentries", "Fix Work Entries", "This could take a long time, do you want to continue?"); ?>
 		<?php echo Html::box("/bend-workhours/editperiod/", "Add Work Period", true); ?>
 		<p></p>
 		<?php if (!empty($workperiods)): ?>

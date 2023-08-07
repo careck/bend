@@ -9,22 +9,22 @@ function listfiltered_GET(Web $w) {
 	// get the user
 	$user = null;
 	if (!empty($userid)) {
-		$user = $w->Auth->getUser($userid);
+		$user = AuthService::getInstance($w)->getUser($userid);
 	} 
 
 	// get workperiod
 	$workperiod = null;
 	if (!empty($periodid)) {
-		$workperiod = $w->Bend->getWorkPeriodForId($periodid);
+		$workperiod = BendService::getInstance($w)->getWorkPeriodForId($periodid);
 	} 
 	
 	// get household
 	$household = null;
 	if (!empty($householdid)) {
-		$household = $w->Bend->getHouseholdForId($householdid);
+		$household = BendService::getInstance($w)->getHouseholdForId($householdid);
 	}
 	
-	$workentries = $w->Bend->getWorkhoursFiltered($userid, $householdid, $periodid);
+	$workentries = BendService::getInstance($w)->getWorkhoursFiltered($userid, $householdid, $periodid);
 	$total_hours = 0;
 	if (!empty($workentries)) {
 		foreach ($workentries as $wea) {

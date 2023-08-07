@@ -1,7 +1,7 @@
 <?php
 function editcategory_GET(Web $w) {
 	list($id) = $w->pathMatch("a");
-	$cat = $w->Bend->getWorkCategoryForId($id);
+	$cat = BendService::getInstance($w)->getWorkCategoryForId($id);
 	if (empty($cat)) {
 		$w->error("no category found","/bend-workhours/admin");
 	}
@@ -20,7 +20,7 @@ function editcategory_GET(Web $w) {
 
 function editcategory_POST(Web $w) {
 	list($id) = $w->pathMatch("a");
-	$cat = $w->Bend->getWorkCategoryForId($id);
+	$cat = BendService::getInstance($w)->getWorkCategoryForId($id);
 	if (empty($cat)) {
 		$w->error("no category found","/bend-workhours/admin#categories");
 	}

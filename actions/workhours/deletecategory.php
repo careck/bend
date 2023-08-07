@@ -2,7 +2,7 @@
 function deletecategory_GET(Web $w) {
 	list($id) = $w->pathMatch("id");
 	if (!empty($id)) {
-		$cat = $w->Bend->getWorkCategoryForId($id);
+		$cat = BendService::getInstance($w)->getWorkCategoryForId($id);
 		if (!empty($cat)) {
 			try {
 				$cat->delete();

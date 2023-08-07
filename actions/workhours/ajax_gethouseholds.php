@@ -2,7 +2,7 @@
 function ajax_gethouseholds_GET(Web $w) {
 	$w->setLayout(null);
 	list($userid) = $w->pathMatch("a");
-	$households = $w->Bend->getHouseholdsForOccupantId($userid);
+	$households = BendService::getInstance($w)->getHouseholdsForOccupantId($userid);
 	$out = [];
 	if (!empty($households)) {
 		foreach ($households as $h) {

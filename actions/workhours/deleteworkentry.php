@@ -2,8 +2,8 @@
 function deleteworkentry_GET(Web $w) {
 	list($id) = $w->pathMatch("id");
 	if (!empty($id)) {
-		$entry = $w->Bend->getWorkEntryForId($id);
-		if (!empty($entry) && $entry->canDelete($w->Auth->user())) {
+		$entry = BendService::getInstance($w)->getWorkEntryForId($id);
+		if (!empty($entry) && $entry->canDelete(AuthService::getInstance($w)->user())) {
 			try {
 				$entry->delete();
 			} catch (Exception $ex) {

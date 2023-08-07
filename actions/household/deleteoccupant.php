@@ -2,10 +2,10 @@
 function deleteoccupant_GET(Web $w) {
 	list($householdid, $occupantid) = $w->pathMatch("a","b");
 
-	$household = $w->Bend->getHouseholdForId($householdid);
+	$household = BendService::getInstance($w)->getHouseholdForId($householdid);
 	if (empty($household)) $w->error("Household not found");
 	
-	$occupant = $w->Bend->getHouseholdOccupantForId($occupantid);
+	$occupant = BendService::getInstance($w)->getHouseholdOccupantForId($occupantid);
 	if (empty($occupant)) $w->error("Occupant not found");
 	
 	$occupant->delete();

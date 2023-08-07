@@ -18,7 +18,7 @@ class BendHouseholdOccupant extends DbObject {
     }
     
     function getUser() {
-    	return $this->Auth->getUser($this->user_id);
+    	return AuthService::getInstance($this->w)->getUser($this->user_id);
     }
     
     function getContact() {
@@ -33,7 +33,7 @@ class BendHouseholdOccupant extends DbObject {
      * @return array of BendWorkEntry objects
      */
     function getWorkhours($period = null) {
-    	return $this->Bend->getWorkhoursForUser($this->user_id,$period);
+    	return BendService::getInstance($this->w)->getWorkhoursForUser($this->user_id,$period);
     }
 
     /**
@@ -43,7 +43,7 @@ class BendHouseholdOccupant extends DbObject {
      * @return array of BendWorkEntry objects
      */
     function getWorkhoursAttributed($period = null) {
-        return $this->Bend->getAttributedWorkhoursForUser($this->user_id,$period);
+        return BendService::getInstance($this->w)->getAttributedWorkhoursForUser($this->user_id,$period);
     }
 
     function getWorkhoursLevyForWorkperiod(BendWorkPeriod $workperiod) {

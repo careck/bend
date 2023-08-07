@@ -21,7 +21,7 @@ class BendWorkEntry extends DbObject {
      * assign a workperiod to the workentry based on the date
      */
     private function setWorkperiod() {
-    	$wp = $this->Bend->getWorkPeriodForDate($this->d2Time($this->d_date));
+    	$wp = BendService::getInstance($this->w)->getWorkPeriodForDate($this->d2Time($this->d_date));
     	if (empty($wp)) {
     		throw NoMatchingWorkPeriodException();
     	}
@@ -44,7 +44,7 @@ class BendWorkEntry extends DbObject {
      * the system will assign to the first household that comes up!
      */
     private function setHousehold() {
-    	$households = $this->Bend->getHouseholdsForOccupantId($this->attributed_user_id);
+    	$households = BendService::getInstance($this->w)->getHouseholdsForOccupantId($this->attributed_user_id);
     	if (!empty($households)) {
     		$h = $households[0];
     		$this->bend_household_id = $h->id;
@@ -72,7 +72,7 @@ class BendWorkEntry extends DbObject {
 
     
     public function getWorkCategory() {
-    	return $this->Bend->getWorkCategoryForId($this->bend_work_category_id);
+    	return BendService::getInstance($this->w)->getWorkCategoryForId($this->bend_work_category_id);
     }
     public function getFullCategoryTitle() {
     	$wc = $this->getWorkCategory();
@@ -88,7 +88,7 @@ class BendWorkEntry extends DbObject {
     }
     
     public function getHousehold() {
-    	return $this->Bend->getHouseholdForId($this->bend_household_id);
+    	return BendService::getInstance($this->w)->getHouseholdForId($this->bend_household_id);
     }
     
     public function getHouseholdTitle() {
@@ -102,7 +102,7 @@ class BendWorkEntry extends DbObject {
     
     public function delete($force = true){
     	// check if workperiod is closed then deletion is forbidden
-    	$wp = $this->Bend->getWorkPeriodForId($this->bend_workperiod_id);
+    	$wp = BendService::getInstance($this->w)->getWorkPeriodForId($this->bend_workperiod_id);
     	if (!empty($wp)) {
     		if ($wp->is_closed) {
     			throw new Exception("Work entry cannot be deleted when its work period is closed!");

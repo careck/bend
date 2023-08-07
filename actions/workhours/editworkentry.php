@@ -7,7 +7,7 @@ function editworkentry_GET(Web $w) {
 			$workentry->fill($_SESSION["work_period_entry_error_object_data"]);
 		}
 	} else {
-		$workentry = $w->Bend->getWorkEntryForId($workentry_id);
+		$workentry = BendService::getInstance($w)->getWorkEntryForId($workentry_id);
 	}
 	if (empty($workentry)) {
 		$w->error("No work entry found for this id: ".$workentry_id);
@@ -25,21 +25,21 @@ function editworkentry_GET(Web $w) {
 			$category_3 = $path[2];
 		}
 	}
-	$this_user = empty($workentry->user_id) ? $w->Auth->user()->id : $workentry->user_id;
-	$this_accredited = empty($workentry->attributed_user_id) ? $w->Auth->user()->id : $workentry->attributed_user_id;
-	$households = $w->Bend->getHouseholdsForOccupantId($this_accredited);
+	$this_user = empty($workentry->user_id) ? AuthService::getInstance($w)->user()->id : $workentry->user_id;
+	$this_accredited = empty($workentry->attributed_user_id) ? AuthService::getInstance($w)->user()->id : $workentry->attributed_user_id;
+	$households = BendService::getInstance($w)->getHouseholdsForOccupantId($this_accredited);
 	$this_date = empty($workentry->d_date) ? time() : $workentry->d_date;
 
 	$form["Work Hours"]=array(
 			array(
-					array("Who did the work?",  "select", "user_id", $this_user, $w->Bend->getOccupantUsers()),
-					array("Who to credit to",  "select", "attributed_user_id", $this_accredited, $w->Bend->getOccupantUsers()),
+					array("Who did the work?",  "select", "user_id", $this_user, BendService::getInstance($w)->getOccupantUsers()),
+					array("Who to credit to",  "select", "attributed_user_id", $this_accredited, BendService::getInstance($w)->getOccupantUsers()),
 					array("Household",  "select", "bend_household_id", $workentry->bend_household_id, $households,"null"),
 					array("Date", "date", "d_date", formatDate($this_date)),
 					array("Hours","text","hours",$workentry->hours),
 			),
 			array(
-					array("Focus Group","select","category_1",!empty($category_1) ? $category_1->id : null,$w->Bend->getTopLevelWorkCategories()),
+					array("Focus Group","select","category_1",!empty($category_1) ? $category_1->id : null,BendService::getInstance($w)->getTopLevelWorkCategories()),
 					array("Team or Activity","select","category_2",!empty($category_2) ? $category_2->id : null,!empty($category_1) ? $category_1->getChildren() : null), 
 					array("Activity","select","category_3",!empty($category_3) ? $category_3->id : null,!empty($category_2) ? $category_2->getChildren() : null),
 			),
@@ -56,14 +56,14 @@ function editworkentry_POST(Web $w) {
 	if (empty($workentry_id)) {
 		$we = new BendWorkEntry($w);	
 	} else {
-		$we = $w->Bend->getWorkEntryForId($workentry_id);
+		$we = BendService::getInstance($w)->getWorkEntryForId($workentry_id);
 	}
 	if (empty($we)) {
 		$w->error("No work entry found for this id: ".$workentry_id);
 	}
 	$we->fill($_POST);
 	if (empty($we->user_id)) {
-		$we->user_id = $w->Auth->user()->id;
+		$we->user_id = AuthService::getInstance($w)->user()->id;
 	}
 	// now get the category
 	if (!empty($_POST['category_3'])) {

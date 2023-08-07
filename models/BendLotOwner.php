@@ -25,7 +25,7 @@ class BendLotOwner extends DbObject {
     }
     
     function getUser() {
-    	return $this->Auth->getUser($this->user_id);
+    	return AuthService::getInstance($this->w)->getUser($this->user_id);
     }
     
     function getContact() {

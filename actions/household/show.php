@@ -5,9 +5,9 @@ function show_GET($w) {
 	if (empty($lotid)) $w->error("Need a Lot ID");
 	if (empty($householdid)) $w->error("Need a household ID");
 	
-	$lot = $w->Bend->getLotForId($lotid);
+	$lot = BendService::getInstance($w)->getLotForId($lotid);
 	if (empty($lot)) $w->error("Lot {$lotid} does not exist");
-	$household = $w->Bend->getHouseholdForId($householdid);
+	$household = BendService::getInstance($w)->getHouseholdForId($householdid);
 	if (empty($household)) $w->error("Household {$householdid} does not exist");
 	
 	History::add("Bend Household: ".$household->streetnumber);

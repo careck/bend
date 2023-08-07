@@ -3,7 +3,7 @@ function editlot_GET(Web $w) {
 	list($id) = $w->pathMatch("id");
 	$lot = new BendLot($w);
 	if (!empty($id)) {
-		$lot = $w->Bend->getLotForId($id);
+		$lot = BendService::getInstance($w)->getLotForId($id);
 	}
 	
 	$form = array("Lot" => array(
@@ -23,7 +23,7 @@ function editlot_POST(Web $w) {
 	list($id) = $w->pathMatch("id");
 	$lot = new BendLot($w);
 	if (!empty($id)) {
-		$lot = $w->Bend->getLotForId($id);
+		$lot = BendService::getInstance($w)->getLotForId($id);
 	}
 	
 	$lot->fill($_POST);

@@ -1,7 +1,7 @@
 <?php
 function addcategory_GET(Web $w) {
 	list($parent_id) = $w->pathMatch("a");
-	$parent = $w->Bend->getWorkCategoryForId($parent_id);
+	$parent = BendService::getInstance($w)->getWorkCategoryForId($parent_id);
 	
 	$form = array("Category" => array(
 			array(

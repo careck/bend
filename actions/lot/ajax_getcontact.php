@@ -4,7 +4,7 @@ function ajax_getcontact_GET(Web $w) {
 	list($userid) = $w->pathMatch("userid");
 	
 	if (!empty($userid)) {
-		$user = $w->Auth->getUser($userid);
+		$user = AuthService::getInstance($w)->getUser($userid);
 		if (!empty($user)) {
 			$w->out(json_encode($user->getContact()->toArray()));
 		}

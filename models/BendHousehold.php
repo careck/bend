@@ -28,7 +28,7 @@ class BendHousehold extends DbObject {
     }
     
     public function getLot() {
-    	return $this->Bend->getLotForId($this->bend_lot_id);
+    	return BendService::getInstance($this->w)->getLotForId($this->bend_lot_id);
     }
     
     public function getTitle() {

@@ -3,7 +3,7 @@ function showlot_GET(Web $w) {
 	list($id) = $w->pathMatch("id");
 	if (empty($id)) $w->error("Need a Lot ID");
 
-	$lot = $w->Bend->getLotForId($id);
+	$lot = BendService::getInstance($w)->getLotForId($id);
 	if (empty($lot)) $w->error("Lot {$id} does not exist");
 	
 	History::add("Bend Lot: ".$lot->lot_number);
