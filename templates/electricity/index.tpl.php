@@ -1,1 +1,1 @@
-<?php
+<h1 align="center">Hello Bend</h1>
