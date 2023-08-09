@@ -1,1 +1,1 @@
-<h1 align="center">Hello Bend</h1>
+<h1 align="center">Hello <?php echo $fullName; ?> </h1>
