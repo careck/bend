@@ -75,6 +75,22 @@
     </div>
     <div id="electricity">
         <?php echo Html::box("/bend-electricity/editmeter/{$household->id}", "Add Meter", true); ?>
-        <?php print_r($meters); ?>
+        
+        <?php if (!empty($meters)) : ?>
+            <table width="80%">
+                <thead>
+                    <tr>
+                        <th>Meter Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($meters as $m) { ?>
+                        <tr>
+                            <td><?php echo $m->meter_number; ?></td>
+                       </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        <?php endif;?>
     </div>
 </div>
