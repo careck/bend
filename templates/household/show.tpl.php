@@ -92,7 +92,7 @@
                             <td><?php echo $m->meter_number; ?></td>
                             <td><?php echo $m->d_end; ?></td>
                             <td><?php echo $m->last_reading_value; ?></td>
-                            <td><?php echo $m->is_inverter; ?></td>
+                            <td><?php echo $m->is_inverter ? "YES" : "NO"; ?></td>
                             <td><?php echo Html::box("/bend-electricty/editmeter/{$household->id}/{$m->id}", "Edit", true); ?>
                        </tr>
                     <?php } ?>
