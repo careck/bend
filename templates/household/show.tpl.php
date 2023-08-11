@@ -81,12 +81,19 @@
                 <thead>
                     <tr>
                         <th>Meter Number</th>
+                        <th>Last Reading Date</th>
+                        <th>Last Meter Reading</th>
+                        <th>Is Inverter</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($meters as $m) { ?>
                         <tr>
                             <td><?php echo $m->meter_number; ?></td>
+                            <td><?php echo $m->d_end; ?></td>
+                            <td><?php echo $m->last_reading_value; ?></td>
+                            <td><?php echo $m->is_inverter; ?></td>
+                            <td><?php echo Html::box("/bend-electricty/editmeter/{$household->id}/{$m->id}", "Edit", true); ?>
                        </tr>
                     <?php } ?>
                 </tbody>

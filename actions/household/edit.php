@@ -29,7 +29,7 @@ function edit_GET(Web $w)
     ];
 
     $w->setLayout(null);
-    $w->out(Html::multiColForm($form, "/bend-household/edit/{$lotId}/{$household->id}#household", "POST", "Save"));
+    $w->out(Html::multiColForm($form, "/bend-household/edit/{$lotId}/{$household->id}", "POST", "Save"));
 }
 
 function edit_POST(Web $w)
