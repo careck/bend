@@ -41,7 +41,5 @@ function editmeter_POST(Web $w)
     $meter->bend_household_id = $householdid;
     $meter->insertOrUpdate();
 
-    //Post error, will not return to "/bend-household/show/" payload looks fine
-    //
     $w->msg("Meter updated", "/bend-household/show/{$household->bend_lot_id}/{$householdid}#electricity");
 }
