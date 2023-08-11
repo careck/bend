@@ -13,7 +13,7 @@ function editmeter_GET(Web $w)
         [
             ["Meter number", "text", "meter_number", $meter->meter_number],
             ["Last Reading Date", "date", "d_end", $meter->d_end],
-            //["Last Meter reading", "text", "last_reading_value", $meter->last_reading_value],
+            ["Last Meter reading", "text", "last_reading_value", $meter->last_reading_value],
             ["Is Inverter", "select", "is_inverter", $meter->is_inverter, [1 => "Yes", 0 => "No"]],
             //is active
 

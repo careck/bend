@@ -76,7 +76,7 @@ class BendInitialModel extends CmfiveMigration
                 ->addIdColumn('bend_lot_id')
                 ->addStringColumn('meter_number')
                 ->addBigIntegerColumn('start_value') //Meter readings decimals?
-                ->addBigIntegerColumn('last_reading_value')
+                ->addBigIntegerColumn('las_reading_value')
                 ->addDateColumn('d_start')
                 ->addDateColumn('d_end')
                 ->addCmfiveParameters()
