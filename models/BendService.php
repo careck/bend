@@ -322,6 +322,11 @@ class BendService extends DbService
     {
         return $this->getObjects("BendMeter", ["bend_household_id" => $id, "is_deleted" => 0]);
     }
+
+    public function getReadingsForMeterId($id)
+    {
+        return $this->getObjects("BendMeterReading", ["bend_meter_id" => $id, "is_deleted" => 0]);
+    }
 }
 
 class WorkPeriodClosedException extends Exception
