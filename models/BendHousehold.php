@@ -5,7 +5,9 @@ class BendHousehold extends DbObject {
     public $bend_lot_id;
     public $streetnumber;
     public $is_chl;
+	public $_is_chl_ui_select_lookup_code = "yesno";
     public $is_occupied;
+	public $_is_occupied_ui_select_lookup_code = "yesno";
     public $is_deleted;
     public $num_occupants;
 

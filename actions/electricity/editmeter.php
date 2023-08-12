@@ -14,9 +14,8 @@ function editmeter_GET(Web $w)
             ["Meter number", "text", "meter_number", $meter->meter_number],
             ["Start Date", "date", "d_start", $meter->d_start],
             ["Initial Reading", "text", "start_value", $meter->start_value],
-            ["Is Inverter", "select", "is_inverter", $meter->is_inverter, [1 => "Yes", 0 => "No"]],
-            ["Is Active", "select", "is_active", $meter->is_active, [1=> "Yes", 0 => "No"]],
-
+            ["Is Inverter", "select", "is_inverter", $meter->is_inverter, $meter->getSelectOptions("is_inverter")],
+            ["Is Active", "select", "is_active", $meter->is_active, $meter->getSelectOptions("is_active")],
         ]
     ];
 
