@@ -22,8 +22,8 @@ function edit_GET(Web $w)
     $form["Household"] = [
         [
             array("Streetnumber", "text", "streetnumber", $household->streetnumber),
-            array("Is CHL", "select", "is_chl", $household->is_chl, [1 => "Yes", 0 => "No"]),
-            array("Is Occupied", "select", "is_occupied", $household->is_occupied, [1 => "Yes", 0 => "No"]),
+            array("Is CHL", "select", "is_chl", $household->is_chl, $household->getSelectOptions("is_chl")),
+            array("Is Occupied", "select", "is_occupied", $household->is_occupied, $household->getSelectOptions("is_occupied")),
             array("Number of Occupants", "text", "num_occupants", $household->num_occupants),
         ]
     ];
