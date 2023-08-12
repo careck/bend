@@ -12,10 +12,10 @@ function editmeter_GET(Web $w)
     $form ["Meter"] = [
         [
             ["Meter number", "text", "meter_number", $meter->meter_number],
-            ["Last Reading Date", "date", "d_end", $meter->d_end],
-            ["Last Meter reading", "text", "last_reading_value", $meter->last_reading_value],
+            ["Start Date", "date", "d_start", $meter->d_start],
+            ["Initial Reading", "text", "start_value", $meter->start_value],
             ["Is Inverter", "select", "is_inverter", $meter->is_inverter, [1 => "Yes", 0 => "No"]],
-            //is active
+            ["Is Active", "select", "is_active", $meter->is_active, [1=> "Yes", 0 => "No"]],
 
         ]
     ];
