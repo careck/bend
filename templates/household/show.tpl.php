@@ -3,7 +3,8 @@
     <div class="tab-head">
         <a href="#household">Household</a>
         <a href="#occupants">Occupants</a>
-        <a href="#electricity">Electricity</a>
+        <a href="#meters">Meters</a>
+        <a href="#readings">Readings</a>
     </div>
 </div>
 <div class="tab-body">
@@ -73,7 +74,7 @@
             </table>
         <?php endif; ?>
     </div>
-    <div id="electricity">
+    <div id="meters">
         <?php echo Html::box("/bend-electricity/editmeter/{$household->id}", "Add Meter", true); ?>
         
         <?php if (!empty($meters)) : ?>
@@ -102,6 +103,34 @@
                             <td><?php echo $m->is_active ? "YES" : "NO"; ?></td>
                             <td><?php echo Html::box("/bend-electricity/editmeter/{$household->id}/{$m->id}", "Edit", true); ?>
                             <?php echo Html::box("/bend-electricity/listreadings/{$household->id}/{$m->id}", "Readings", true); ?></td>
+                       </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        <?php endif;?>
+    </div>
+    <div id="readings">
+        <?php echo Html::box("/bend-electricity/editreading/{$household->id}", "Add Reading", true); ?>
+        
+        <?php if (!empty($readings)) : ?>
+            <table width="80%">
+                <thead>
+                    <tr>
+                        <th>Meter Number</th>
+                        <th>Type</th>
+                        <th>Electricity Period</th>
+                        <th>Date</th>
+                        <th>Value</th>
+                        <th>Actions</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($readings as $r) { ?>
+                        <tr>
+                            <td><?php echo $r->$bend_meter_id; ?></td>
+                            <td><?php echo $meters->is_inverter ? "INVERTER" : "METER"; ?></td>
+
                        </tr>
                     <?php } ?>
                 </tbody>

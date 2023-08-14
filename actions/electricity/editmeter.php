@@ -40,5 +40,5 @@ function editmeter_POST(Web $w)
     $meter->bend_household_id = $householdid;
     $meter->insertOrUpdate();
 
-    $w->msg("Meter updated", "/bend-household/show/{$household->bend_lot_id}/{$householdid}#electricity");
+    $w->msg("Meter updated", "/bend-household/show/{$household->bend_lot_id}/{$householdid}#meters");
 }
