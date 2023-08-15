@@ -102,7 +102,8 @@
                             <td><?php echo $m->is_inverter ? "YES" : "NO"; ?></td>
                             <td><?php echo $m->is_active ? "YES" : "NO"; ?></td>
                             <td><?php echo Html::box("/bend-electricity/editmeter/{$household->id}/{$m->id}", "Edit", true); ?>
-                            <?php echo Html::box("/bend-electricity/listreadings/{$household->id}/{$m->id}", "Readings", true); ?></td>
+                            <?php echo Html::box("/bend-electricity/listreadings/{$household->id}/{$m->id}", "Readings", true); ?>
+                            <?php echo Html::box("/bend-electricity/editreading/{$m->id}", "Add Reading", true); ?></td>
                        </tr>
                     <?php } ?>
                 </tbody>
@@ -110,7 +111,6 @@
         <?php endif;?>
     </div>
     <div id="readings">
-        <?php echo Html::box("/bend-electricity/editreading/{$household->id}", "Add Reading", true); ?>
         
         <?php if (!empty($readings)) : ?>
             <table width="80%">
@@ -134,7 +134,7 @@
                             <td><?php echo !empty($r->getElectricityPeriod()) ? $r->getElectricityPeriod()->getSelectOptionTitle() : "" ?></td>
                             <td><?php echo formatDate($r->d_date); ?></td>
                             <td><?php echo $r->value; ?></td>
-                            <td><?php echo Html::box("/bend-electricity/editreading/{$household->id}/{$r->id}", "Edit", true); ?></td>
+                            <td><?php echo Html::box("/bend-electricity/editreading/{$meter->id}/{$r->id}", "Edit", true); ?></td>
                        </tr>
                     <?php } ?>
                 </tbody>

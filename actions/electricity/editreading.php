@@ -12,7 +12,7 @@ function editreading_GET(Web $w)
     $form ["Reading"] = [
         [
             ["Meter number", "text", "meter_number", $meter->meter_number],
-            ["Electricity Period", "text", "bend_electricity_period", !empty($reading->getElectricityPeriod()) ? $reading->getElectricityPeriod()->getSelectOptionTitle() : ""],
+            ["Electricity Period", "select", "bend_electricity_period", !empty($reading->getElectricityPeriod()) ? $reading->getElectricityPeriod()->getSelectOptionTitle() : ""],
             ["Date", "date", "d_date", formatDate($reading->d_date)],
             ["Value", "text", "value", $reading->value],
             ["Notes", "text", "notes", $reading->notes],
