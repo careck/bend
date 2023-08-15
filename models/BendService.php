@@ -332,6 +332,23 @@ class BendService extends DbService
     {
         return $this->getObject("BendMeterReading", ["id" => $id, "is_deleted" => 0]);
     }
+
+    public function getElectricityPeriodForId($id)
+    {
+        return $this->getObject("BendElectricityPeriod", ["id" => $id, "is_deleted" => 0]);
+    }
+
+    public function getReadingsForHouseholdId($id)
+    {
+        $meters = $this->getMetersForHouseholdId($id);
+        $readings = [];
+        if (!empty($meters)) {
+            foreach ($meters as $meter) {
+                $readings = array_merge($readings, $this->getReadingsForMeterId($meter->id));
+            }
+        }
+        return $readings;
+    }
 }
 
 class WorkPeriodClosedException extends Exception

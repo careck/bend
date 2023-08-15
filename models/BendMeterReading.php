@@ -7,4 +7,14 @@ class BendMeterReading extends DbObject
     public $value;
     public $notes;
     public $previous_value;
+
+    public function getMeter()
+    {
+        return BendService::getInstance($this->w)->getMeterForId($this->bend_meter_id);
+    }
+
+    public function getElectricityPeriod()
+    {
+        return BendService::getInstance($this->w)->getElectricityPeriodForId($this->bend_electricity_period_id);
+    }
 }

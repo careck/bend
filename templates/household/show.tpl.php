@@ -126,15 +126,21 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($readings as $r) { ?>
+                    <?php foreach ($readings as $r) { 
+                        $meter = $r->getMeter();?>
                         <tr>
-                            <td><?php echo $r->$bend_meter_id; ?></td>
-                            <td><?php echo $meters->is_inverter ? "INVERTER" : "METER"; ?></td>
-
+                            <td><?php echo $meter->meter_number; ?></td>
+                            <td><?php echo $meter->is_inverter ? "INVERTER" : "METER"; ?></td>
+                            <td><?php echo !empty($r->getElectricityPeriod()) ? $r->getElectricityPeriod()->getSelectOptionTitle() : "" ?></td>
+                            <td><?php echo formatDate($r->d_date); ?></td>
+                            <td><?php echo $r->value; ?></td>
+                            <td><?php echo Html::box("/bend-electricity/editreading/{$household->id}/{$r->id}", "Edit", true); ?></td>
                        </tr>
                     <?php } ?>
                 </tbody>
             </table>
+        <?php else: ?>
+            <p>No readings found</p>
         <?php endif;?>
     </div>
 </div>

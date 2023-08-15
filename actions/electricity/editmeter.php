@@ -12,7 +12,7 @@ function editmeter_GET(Web $w)
     $form ["Meter"] = [
         [
             ["Meter number", "text", "meter_number", $meter->meter_number],
-            ["Start Date", "date", "d_start", $meter->d_start],
+            ["Start Date", "date", "d_start", formatDate($meter->d_start)],
             ["Initial Reading", "text", "start_value", $meter->start_value],
             ["Is Inverter", "select", "is_inverter", $meter->is_inverter, $meter->getSelectOptions("is_inverter")],
             ["Is Active", "select", "is_active", $meter->is_active, $meter->getSelectOptions("is_active")],
@@ -38,6 +38,7 @@ function editmeter_POST(Web $w)
 
     $meter->fill($_POST);
     $meter->bend_household_id = $householdid;
+    $meter->bend_lot_id = $household->bend_lot_id;
     $meter->insertOrUpdate();
 
     $w->msg("Meter updated", "/bend-household/show/{$household->bend_lot_id}/{$householdid}#meters");

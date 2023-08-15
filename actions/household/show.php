@@ -34,4 +34,5 @@ function show_GET($w)
     $w->ctx("currentOccupants", $household->getCurrentOccupants());
     $w->ctx("pastOccupants", $household->getPastOccupants());
     $w->ctx("meters", BendService::getInstance($w)->getMetersForHouseholdId($householdid));
+    $w->ctx("readings", BendService::getInstance($w)->getReadingsForHouseholdId($householdid));
 }
