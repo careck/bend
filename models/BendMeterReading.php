@@ -20,8 +20,6 @@ class BendMeterReading extends DbObject
 
     public function getPreviousValue()
     {
-        $readings = $this->getObjects("BendMeterReading", [["bend_meter_id",$this->bend_meter_id], ["d_date < ",$this->d_date]], false, true, ["d_date DESC"]);
-        $previous_reading =  !empty($readings) ? $readings[0] : null;
-        return !empty($previous_reading) ? $previous_reading->value : $this->getMeter()->start_value;
+        return $this->previous_value;
     }
 }
