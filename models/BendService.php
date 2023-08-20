@@ -217,7 +217,7 @@ class BendService extends DbService
         $users = [];
         if (!empty($occupants)) {
             foreach ($occupants as $oc) {
-                $users[] = $this->Auth->getUser($oc->user_id);
+                $users[] = AuthService::getInstance($this->w)->getUser($oc->user_id);
             }
         }
         usort($users, function ($a, $b) {

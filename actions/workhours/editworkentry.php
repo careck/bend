@@ -1,91 +1,123 @@
 <?php
-function editworkentry_GET(Web $w) {
-	list($workentry_id) = $w->pathMatch("id");
-	if (empty($workentry_id)) {
-		$workentry = new BendWorkEntry($w);
-		if (!empty($_SESSION["work_period_entry_error_object_data"])) {
-			$workentry->fill($_SESSION["work_period_entry_error_object_data"]);
-		}
-	} else {
-		$workentry = BendService::getInstance($w)->getWorkEntryForId($workentry_id);
-	}
-	if (empty($workentry)) {
-		$w->error("No work entry found for this id: ".$workentry_id);
-	}
-	$category = $workentry->getWorkCategory();
-	if (!empty($category)) {
-		$path = $category->getPath();
-		if (!empty($path[0])) {
-			$category_1 = $path[0];
-		}
-		if (!empty($path[1])) {
-			$category_2 = $path[1];
-		}
-		if (!empty($path[2])) {
-			$category_3 = $path[2];
-		}
-	}
-	$this_user = empty($workentry->user_id) ? AuthService::getInstance($w)->user()->id : $workentry->user_id;
-	$this_accredited = empty($workentry->attributed_user_id) ? AuthService::getInstance($w)->user()->id : $workentry->attributed_user_id;
-	$households = BendService::getInstance($w)->getHouseholdsForOccupantId($this_accredited);
-	$this_date = empty($workentry->d_date) ? time() : $workentry->d_date;
 
-	$form["Work Hours"]=array(
-			array(
-					array("Who did the work?",  "select", "user_id", $this_user, BendService::getInstance($w)->getOccupantUsers()),
-					array("Who to credit to",  "select", "attributed_user_id", $this_accredited, BendService::getInstance($w)->getOccupantUsers()),
-					array("Household",  "select", "bend_household_id", $workentry->bend_household_id, $households,"null"),
-					array("Date", "date", "d_date", formatDate($this_date)),
-					array("Hours","text","hours",$workentry->hours),
-			),
-			array(
-					array("Focus Group","select","category_1",!empty($category_1) ? $category_1->id : null,BendService::getInstance($w)->getTopLevelWorkCategories()),
-					array("Team or Activity","select","category_2",!empty($category_2) ? $category_2->id : null,!empty($category_1) ? $category_1->getChildren() : null), 
-					array("Activity","select","category_3",!empty($category_3) ? $category_3->id : null,!empty($category_2) ? $category_2->getChildren() : null),
-			),
-			array(
-					array("Description","text","description",$workentry->description),
-			),
-	);
-	$w->ctx("form",Html::multiColForm($form, "/bend-workhours/editworkentry/{$workentry_id}", "POST", "Save"));
-	
+function editworkentry_GET(Web $w)
+{
+    list($workentry_id) = $w->pathMatch("id");
+    if (empty($workentry_id)) {
+        $workentry = new BendWorkEntry($w);
+        if (!empty($_SESSION["work_period_entry_error_object_data"])) {
+            $workentry->fill($_SESSION["work_period_entry_error_object_data"]);
+        }
+    } else {
+        $workentry = BendService::getInstance($w)->getWorkEntryForId($workentry_id);
+    }
+    if (empty($workentry)) {
+        $w->error("No work entry found for this id: " . $workentry_id);
+    }
+
+
+    $category = $workentry->getWorkCategory();
+    if (!empty($category)) {
+        $path = $category->getPath();
+        if (!empty($path[0])) {
+            $category_1 = $path[0];
+        }
+        if (!empty($path[1])) {
+            $category_2 = $path[1];
+        }
+        if (!empty($path[2])) {
+            $category_3 = $path[2];
+        }
+    }
+    $this_user = empty($workentry->user_id) ? AuthService::getInstance($w)->user()->id : $workentry->user_id;
+    $this_accredited = empty($workentry->attributed_user_id) ? AuthService::getInstance($w)->user()->id : $workentry->attributed_user_id;
+    $households = BendService::getInstance($w)->getHouseholdsForOccupantId($this_accredited);
+    $this_date = empty($workentry->d_date) ? time() : $workentry->d_date;
+
+    // check if last work entry exists in session
+    if (!empty($_SESSION["last_workentry_id"])) {
+        $last_workentry = BendService::getInstance($w)->getWorkEntryForId($_SESSION["last_workentry_id"]);
+        if (!empty($last_workentry)) {
+            $this_user = $last_workentry->user_id;
+            $this_accredited = $last_workentry->attributed_user_id;
+            $households = BendService::getInstance($w)->getHouseholdsForOccupantId($this_accredited);
+            $this_date = $last_workentry->d_date;
+            unset($_SESSION["last_workentry_id"]);
+        }
+    }
+
+    $form["Work Hours"] = array(
+        array(
+            array("Who did the work?",  "select", "user_id", $this_user, BendService::getInstance($w)->getOccupantUsers()),
+            array("Who to credit to",  "select", "attributed_user_id", $this_accredited, BendService::getInstance($w)->getOccupantUsers()),
+            array("Household",  "select", "bend_household_id", $workentry->bend_household_id, $households, "null"),
+            array("Date", "date", "d_date", formatDate($this_date)),
+            array("Hours", "text", "hours", $workentry->hours),
+        ),
+        array(
+            array("Focus Group", "select", "category_1", !empty($category_1) ? $category_1->id : null, BendService::getInstance($w)->getTopLevelWorkCategories()),
+            array("Team or Activity", "select", "category_2", !empty($category_2) ? $category_2->id : null, !empty($category_1) ? $category_1->getChildren() : null),
+            array("Activity", "select", "category_3", !empty($category_3) ? $category_3->id : null, !empty($category_2) ? $category_2->getChildren() : null),
+        ),
+        array(
+            array("Description", "text", "description", $workentry->description),
+        ),
+        array(
+            array("", "hidden", "add_another", "0"),
+        ),
+    );
+
+    $extra_button = "";
+
+    if (empty($workentry_id)) {
+        // add the save and add another button
+        $onclick = "document.forms[0].add_another.value = 1;document.forms[0].submit();";
+        $extra_button = "<button onclick=\"{$onclick}\" class=\"button tiny  button savebutton\" type=\"submit\">Save and Add Another</button>";
+    }
+
+    $w->ctx("form", Html::multiColForm($form, "/bend-workhours/editworkentry/{$workentry_id}", "POST", "Save", null, null, $extra_button));
 }
 
-function editworkentry_POST(Web $w) {
-	list($workentry_id) = $w->pathMatch("id");
-	if (empty($workentry_id)) {
-		$we = new BendWorkEntry($w);	
-	} else {
-		$we = BendService::getInstance($w)->getWorkEntryForId($workentry_id);
-	}
-	if (empty($we)) {
-		$w->error("No work entry found for this id: ".$workentry_id);
-	}
-	$we->fill($_POST);
-	if (empty($we->user_id)) {
-		$we->user_id = AuthService::getInstance($w)->user()->id;
-	}
-	// now get the category
-	if (!empty($_POST['category_3'])) {
-		$we->bend_work_category_id = $_POST['category_3']; 
-	} else if (!empty($_POST['category_2'])) {
-		$we->bend_work_category_id = $_POST['category_2']; 
-	} else if (!empty($_POST['category_1'])) {
-		$we->bend_work_category_id = $_POST['category_1']; 
-	}
-	
-	// TODO check work period, etc.
-	try {
-		$we->insertOrUpdate();
-		unset($_SESSION["work_period_entry_error_object_data"]);
-	} catch (WorkPeriodClosedException $e) {
-		$_SESSION["work_period_entry_error_object_data"] = $we->toArray();
-		$w->error("You cannot add hours on this date. This workperiod is closed.","/bend-workhours/editworkentry/".$we->id);
-	} catch (NoMatchingWorkPeriodException $e) {
-		$_SESSION["work_period_entry_error_object_data"] = $we->toArray();
-		$w->error("No matching workperiod found for this date.","/bend-workhours/editworkentry/".$we->id);
-	}
-	
-	
-	$w->msg("Work hours recorded","/bend-workhours/list/".$we->user_id."/".$we->bend_workperiod_id);
+function editworkentry_POST(Web $w)
+{
+    list($workentry_id) = $w->pathMatch("id");
+    if (empty($workentry_id)) {
+        $we = new BendWorkEntry($w);
+    } else {
+        $we = BendService::getInstance($w)->getWorkEntryForId($workentry_id);
+    }
+    if (empty($we)) {
+        $w->error("No work entry found for this id: " . $workentry_id);
+    }
+    $we->fill($_POST);
+    if (empty($we->user_id)) {
+        $we->user_id = AuthService::getInstance($w)->user()->id;
+    }
+    // now get the category
+    if (!empty($_POST['category_3'])) {
+        $we->bend_work_category_id = $_POST['category_3'];
+    } else if (!empty($_POST['category_2'])) {
+        $we->bend_work_category_id = $_POST['category_2'];
+    } else if (!empty($_POST['category_1'])) {
+        $we->bend_work_category_id = $_POST['category_1'];
+    }
+
+    // TODO check work period, etc.
+    try {
+        $we->insertOrUpdate();
+        unset($_SESSION["work_period_entry_error_object_data"]);
+    } catch (WorkPeriodClosedException $e) {
+        $_SESSION["work_period_entry_error_object_data"] = $we->toArray();
+        $w->error("You cannot add hours on this date. This workperiod is closed.", "/bend-workhours/editworkentry/" . $we->id);
+    } catch (NoMatchingWorkPeriodException $e) {
+        $_SESSION["work_period_entry_error_object_data"] = $we->toArray();
+        $w->error("No matching workperiod found for this date.", "/bend-workhours/editworkentry/" . $we->id);
+    }
+
+    if (!empty($_POST['add_another'])) {
+        $_SESSION["last_workentry_id"] = $we->id;
+        $w->msg("Work hours recorded", "/bend-workhours/editworkentry");
+    } else {
+        $w->msg("Work hours recorded", "/bend-workhours/list/" . $we->user_id . "/" . $we->bend_workperiod_id);
+    }
 }
