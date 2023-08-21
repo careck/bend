@@ -46,6 +46,7 @@
         <?php endif; ?>
     </div>
     <div id="readings">
+        <?php echo Html::b("/bend-electricity/readingwizard/", "Add Reading"); ?>
         <?php if (!empty($readings)) : ?>
             <table width="80%">
                 <thead>
