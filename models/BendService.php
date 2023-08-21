@@ -318,9 +318,13 @@ class BendService extends DbService
         return $this->getObject("BendMeter", ["id" => $id, "is_deleted" => 0]);
     }
 
-    public function getMetersForHouseholdId($id)
+    public function getMetersForHouseholdId($id, $include_inactive = true)
     {
-        return $this->getObjects("BendMeter", ["bend_household_id" => $id, "is_deleted" => 0]);
+        if ($include_inactive) {
+            return $this->getObjects("BendMeter", ["bend_household_id" => $id, "is_deleted" => 0]);
+        } else {
+            return $this->getObjects("BendMeter", ["bend_household_id" => $id, "is_deleted" => 0, "is_active" => 1]);
+        }
     }
 
     public function getReadingsForMeterId($id)

@@ -7,7 +7,7 @@ function readingwizard_GET(Web $w)
         [
             ["Household", "select", "bend_household_id", $householdid, BendService::getInstance($w)->getAllHouseholds()],
         ],[
-            ["Meter", "select", "bend_meter_id"],
+            ["Meter", "select", "bend_meter_id", "", BendService::getInstance($w)->getMetersForHouseholdId($householdid, false)],
         ],[
             ["Value", "text", "value"],
         ]
@@ -20,6 +20,8 @@ function readingwizard_POST(web $w)
     $reading = new BendMeterReading($w);
 
     $reading->fill($_POST);
+    $reading->d_date = time();
+    $reading->insert();
 
     $w->msg("Reading Updated", "/bend-electricity/readingwizard/{$_POST["bend_household_id"]}");
 }

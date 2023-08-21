@@ -34,4 +34,7 @@ class BendMeter extends DbObject
         return $this->getObject("BendHousehold", $this->bend_household_id);
     }
 
+    public function getSelectOptionTitle() {
+        return $this->meter_number . " (" . ($this->is_inverter ? "INVERTER" : "METER") . ")";
+    }
 }
