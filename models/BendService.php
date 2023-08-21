@@ -353,6 +353,11 @@ class BendService extends DbService
     {
         return $this->getObjects("BendElectricityPeriod", ["is_deleted" => 0], null, false);
     }
+
+    public function getAllElectricityReadings()
+    {
+        return $this->getObjects("BendMeterReading", ["is_deleted" => 0], null, false, ["d_date desc"]);
+    }
 }
 
 class WorkPeriodClosedException extends Exception

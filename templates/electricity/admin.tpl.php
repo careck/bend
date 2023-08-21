@@ -2,7 +2,7 @@
 <div class="tabs">
     <div class="tab-head">
         <a href="#periods">Electricity Periods</a>
-        <a href="#meters">Electricity Meters</a>
+        <a href="#readings">Electricity Readings</a>
     </div>
 </div>
 <div class="tab-body">
@@ -45,6 +45,39 @@
             </table>
         <?php endif; ?>
     </div>
-    <div id="meters">
+    <div id="readings">
+        <?php if (!empty($readings)) : ?>
+            <table width="80%">
+                <thead>
+                    <tr>
+                        <th>Household</th>
+                        <th>Meter Number</th>
+                        <th>Type</th>
+                        <th>Electricity Period</th>
+                        <th>Date</th>
+                        <th>Value</th>
+                        <th>Actions</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($readings as $r) { 
+                        $meter = $r->getMeter();
+                        $household = $meter->getHousehold();?>
+                        <tr>
+                            <td><?php echo $household->getSelectOptionTitle(); ?></td>
+                            <td><?php echo $meter->meter_number; ?></td>
+                            <td><?php echo $meter->is_inverter ? "INVERTER" : "METER"; ?></td>
+                            <td><?php echo !empty($r->getElectricityPeriod()) ? $r->getElectricityPeriod()->getSelectOptionTitle() : "" ?></td>
+                            <td><?php echo formatDate($r->d_date); ?></td>
+                            <td><?php echo $r->value; ?></td>
+                            <td><?php echo Html::box("/bend-electricity/editreading/{$meter->id}/{$r->id}?backto=".urlencode("bend-electricity/admin#readings"), "Edit", true); ?></td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        <?php else : ?>
+            <p>No readings found</p>
+        <?php endif; ?>
     </div>
 </div>

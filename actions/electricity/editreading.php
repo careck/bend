@@ -12,17 +12,22 @@ function editreading_GET(Web $w)
     $form ["Reading"] = [
         [
             ["Meter number", "text", "meter_number", $meter->meter_number],
-            ["Electricity Period", "select", "bend_electricity_period", !empty($reading->getElectricityPeriod()) ? $reading->getElectricityPeriod()->getSelectOptionTitle() : ""],
+            ["Electricity Period", "select", "bend_electricity_period_id", !empty($reading->getElectricityPeriod()) ? $reading->getElectricityPeriod()->getSelectOptionTitle() : "", 
+                BendService::getInstance($w)->getAllElectricityPeriods()],
+            ["Type", "select", "is_inverter", $meter->is_inverter ? "INVERTER" : "METER", ["INVERTER", "METER"]],
+        ],
+        [
             ["Date", "date", "d_date", formatDate($reading->d_date)],
             ["Value", "text", "value", $reading->value],
             ["Notes", "text", "notes", $reading->notes],
-
         ]
     ];
 
-    //$w->setLayout(null);
-    
-    $w->out(Html::multiColForm($form, "/bend-electricity/editreading/{$meterid}/{$readingid}", "POST", "Save")); 
+    $backto = "";
+    if (!empty($_GET['backto'])) {
+        $backto = "?backto=".$_GET['backto'];
+    }
+    $w->out(Html::multiColForm($form, "/bend-electricity/editreading/{$meterid}/{$readingid}".$backto, "POST", "Save")); 
 
 }
 
@@ -55,5 +60,9 @@ function editreading_POST(Web $w)
 
     $meter->update();
 
-    $w->msg("Reading Updated", "/bend-household/show/{$meter->bend_lot_id}/{$meter->bend_household_id}#readings");
+    $target = "/bend-household/show/{$meter->bend_lot_id}/{$meter->bend_household_id}#readings";
+    if (!empty($_GET['backto'])) {
+        $target = $_GET['backto'];
+    }
+    $w->msg("Reading Updated", $target);
 }

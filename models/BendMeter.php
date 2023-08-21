@@ -29,4 +29,9 @@ class BendMeter extends DbObject
         return !empty($this->getLastReading()) ? $this->getLastReading()->value : $this->start_value;
     }
 
+    public function getHousehold()
+    {
+        return $this->getObject("BendHousehold", $this->bend_household_id);
+    }
+
 }
