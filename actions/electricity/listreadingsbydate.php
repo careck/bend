@@ -2,7 +2,7 @@
 
 function listreadingsbydate_GET(Web $w)
 {
-    list($periodid) = $w->pathMatch("periodid");
+    $w->pathMatch("periodid");
     $readings = BendService::getInstance($w)->getAllElectricityReadings();
     
     $dateoccurances = [];
@@ -14,5 +14,4 @@ function listreadingsbydate_GET(Web $w)
     }
     
     $w->ctx("readingdates", $dateoccurances);
-    $w->ctx("periodid", $periodid);
 };

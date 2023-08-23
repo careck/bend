@@ -12,7 +12,7 @@ function editreading_GET(Web $w)
     $form ["Reading"] = [
         [
             ["Meter number", "text", "meter_number", $meter->meter_number],
-            ["Electricity Period", "select", "bend_electricity_period_id", !empty($reading->getElectricityPeriod()) ? $reading->getElectricityPeriod()->getSelectOptionTitle() : "", 
+            ["Electricity Period", "select", "bend_electricity_period_id", $reading->bend_electricity_period_id, 
                 BendService::getInstance($w)->getAllElectricityPeriods()],
             ["Type", "select", "is_inverter", $meter->is_inverter ? "INVERTER" : "METER", ["INVERTER", "METER"]],
         ],
