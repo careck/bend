@@ -38,7 +38,8 @@
                             <td><?php echo $p->bend_total_consumption_kwh ?></td>
                             <td><?php echo $p->bend_total_production_kwh ?></td>
                             <td><?php echo $p->bend_total_invoiced ?></td>
-                            <td><?php echo Html::box("/bend-electricity/editperiod/{$p->id}", "Edit", true); ?></td>
+                            <td><?php echo Html::box("/bend-electricity/editperiod/{$p->id}", "Edit", true); ?>
+                            <?php echo Html::box("/bend-electricity/listreadingsbydate/{$p->id}", "Assign Period", true); ?></td>
                         </tr>
                     <?php } ?>
                 </tbody>
@@ -63,17 +64,19 @@
                 </thead>
                 <tbody>
                     <?php foreach ($readings as $r) { 
-                        $meter = $r->getMeter();
-                        $household = $meter->getHousehold();?>
-                        <tr>
-                            <td><?php echo $household->getSelectOptionTitle(); ?></td>
-                            <td><?php echo $meter->meter_number; ?></td>
-                            <td><?php echo $meter->is_inverter ? "INVERTER" : "METER"; ?></td>
-                            <td><?php echo !empty($r->getElectricityPeriod()) ? $r->getElectricityPeriod()->getSelectOptionTitle() : "" ?></td>
-                            <td><?php echo formatDate($r->d_date); ?></td>
-                            <td><?php echo $r->value; ?></td>
-                            <td><?php echo Html::box("/bend-electricity/editreading/{$meter->id}/{$r->id}?backto=".urlencode("bend-electricity/admin#readings"), "Edit", true); ?></td>
-                        </tr>
+                        if (!empty($r->getMeter())) {
+                            $meter = $r->getMeter();
+                            $household = $meter->getHousehold();?>
+                            <tr>
+                                <td><?php echo $household->getSelectOptionTitle(); ?></td>
+                                <td><?php echo $meter->meter_number; ?></td>
+                                <td><?php echo $meter->is_inverter ? "INVERTER" : "METER"; ?></td>
+                                <td><?php echo !empty($r->getElectricityPeriod()) ? $r->getElectricityPeriod()->getSelectOptionTitle() : "" ?></td>
+                                <td><?php echo formatDate($r->d_date); ?></td>
+                                <td><?php echo $r->value; ?></td>
+                                <td><?php echo Html::box("/bend-electricity/editreading/{$meter->id}/{$r->id}?backto=".urlencode("bend-electricity/admin#readings"), "Edit", true); ?></td>
+                            </tr>
+                        <?php } ?>
                     <?php } ?>
                 </tbody>
             </table>
