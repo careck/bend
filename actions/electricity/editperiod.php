@@ -22,8 +22,8 @@ function editperiod_GET(Web $w)
 
     $form ["Bend"] = [
         [
-            ["Bend Total Consumption", "text", "bend_total_consumption_kwh", $period->bend_total_consumption_kwh],
-            ["Bend Total Production", "text", "bend_total_production_kwh", $period->bend_total_production_kwh],
+            ["Bend Total Consumption", "static", "bend_total_consumption_kwh", $period->getBendTotalConsumption()],
+            ["Bend Total Production", "static", "bend_total_production_kwh", $period->getBendTotalProduction()],
             ["Bend Total Invoiced", "text", "bend_total_invoiced", $period->bend_total_invoiced],
         ]
     ];

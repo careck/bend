@@ -35,8 +35,8 @@
                             <td><?php echo $p->provider_invoice_total_inc_gst ?></td>
                             <td><?php echo $p->provider_total_consumption_kwh ?></td>
                             <td><?php echo $p->provider_total_production_kwh ?></td>
-                            <td><?php echo $p->bend_total_consumption_kwh ?></td>
-                            <td><?php echo $p->bend_total_production_kwh ?></td>
+                            <td><?php echo $p->getBendTotalConsumption() ?></td>
+                            <td><?php echo $p->getBendTotalProduction() ?></td>
                             <td><?php echo $p->bend_total_invoiced ?></td>
                             <td><?php echo Html::box("/bend-electricity/editperiod/{$p->id}", "Edit", true); ?>
                             <?php echo Html::box("/bend-electricity/listreadingsbydate/{$p->id}", "Assign Period", true); ?></td>
