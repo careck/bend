@@ -7,7 +7,7 @@ function assignperiodtoreadings_GET(Web $w)
     $readings = BendService::getInstance($w)->getObjects("BendMeterReading", ["d_date" => formatDate($date, "Y-m-d")]);
 
     foreach ($readings as $reading) {
-        if ($reading->d_date == $date) {
+        if ($reading->d_date == $date && empty($reading->bend_electricity_period_id)) {
             $reading->bend_electricity_period_id = $periodid;
             $reading->update();
         }

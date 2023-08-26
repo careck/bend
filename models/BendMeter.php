@@ -25,7 +25,8 @@ class BendMeter extends DbObject
         return !empty($readings) ? $readings[0] : null;
     }
 
-    public function getLastReadingValue() {
+    public function getLastReadingValue() 
+    {
         return !empty($this->getLastReading()) ? $this->getLastReading()->value : $this->start_value;
     }
 
@@ -34,7 +35,20 @@ class BendMeter extends DbObject
         return $this->getObject("BendHousehold", $this->bend_household_id);
     }
 
-    public function getSelectOptionTitle() {
+    public function getSelectOptionTitle() 
+    {
         return $this->meter_number . " (" . ($this->is_inverter ? "INVERTER" : "METER") . ")";
     }
+
+    public function getDifferenceForPeriodId($periodid)
+    {
+        $readings = $this->getObjects("BendMeterReading", ["bend_meter_id" => $this->id], false, true, ["d_date DESC"]);
+        foreach ($readings as $index => $reading) {
+            if ($reading->bend_electricity_period_id == $periodid) {
+                $current = $reading->value;
+                $previous = $index == sizeof($readings) - 1 ? $this->start_value : $readings[$index + 1]->value;
+                return $current - $previous;
+            }
+        }
+    }    
 }

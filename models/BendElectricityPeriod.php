@@ -25,41 +25,28 @@ class BendElectricityPeriod extends DbObject
         return formatDate($this->d_provider_period_start) . " - " . formatDate($this->d_provider_period_end);
     }
 
-    
+
     public function getBendTotalConsumption()
     {
         $meters = BendService::getInstance($this->w)->getAllMeters();
         $total = 0;
         foreach ($meters as $meter) {
             if ($meter->is_inverter == 0) {
-                $readings = $meter->getReadings();
-                foreach ($readings as $reading) {
-                    if ($reading->bend_electricity_period_id == $this->id) {
-                        $total += $reading->value;
-                    }
-                }
+                $total += $meter->getDifferenceForPeriodId($this->id);
             }
         }
         return $total;
-    
     }
-    
+
     public function getBendTotalProduction()
     {
         $meters = BendService::getInstance($this->w)->getAllMeters();
         $total = 0;
         foreach ($meters as $meter) {
             if ($meter->is_inverter == 1) {
-                $readings = $meter->getReadings();
-                foreach ($readings as $reading) {
-                    if ($reading->bend_electricity_period_id == $this->id) {
-                        $total += $reading->value;
-                    }
-                }
+                $total += $meter->getDifferenceForPeriodId($this->id);
             }
         }
         return $total;
-    
     }
-    
 }
