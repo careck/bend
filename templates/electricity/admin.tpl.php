@@ -39,7 +39,8 @@
                             <td><?php echo $p->getBendTotalProduction() ?></td>
                             <td><?php echo $p->bend_total_invoiced ?></td>
                             <td><?php echo Html::box("/bend-electricity/editperiod/{$p->id}", "Edit", true); ?>
-                            <?php echo Html::box("/bend-electricity/listreadingsbydate/{$p->id}", "Assign Period", true); ?></td>
+                            <?php echo Html::box("/bend-electricity/listreadingsbydate/{$p->id}", "Assign Period", true); ?>
+                            <?php echo Html::box("/bend-electricity/showhouseholdusageforperiod/{$p->id}", "Show", true); ?></td>
                         </tr>
                     <?php } ?>
                 </tbody>

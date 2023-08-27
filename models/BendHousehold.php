@@ -84,4 +84,25 @@ class BendHousehold extends DbObject
         }
         return $levy;
     }
+
+    public function getConsumptionForElectricityPeriod($periodid)
+    {
+        $meters = $this->getObjects("BendMeter", ["bend_household_id" => $this->id, "is_active" => 1, "is_inverter" => 0]);
+        $total = 0;
+        foreach ($meters as $meter) {
+            $total += $meter->getDifferenceForPeriodId($periodid);
+        }
+        return $total;
+    }
+
+    public function getProductionForElectricityPeriod($periodid)
+    {
+        $meters = $this->getObjects("BendMeter", ["bend_household_id" => $this->id, "is_active" => 1, "is_inverter" => 1]);
+        $total = 0;
+        foreach ($meters as $meter) {
+            $total += $meter->getDifferenceForPeriodId($periodid);
+        }
+        return $total;
+    }
+
 }
